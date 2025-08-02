@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Hunt: Showdown Bingo</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; background-color: #1e1e1e; color: white; }
+    table { border-collapse: collapse; margin: 20px auto; font-size: 14px; }
+    th, td {
+      border: 1px solid #444;
+      padding: 12px;
+      width: 120px;
+      height: 60px;
+      text-align: center;
+      background-color: #2e2e2e;
+    }
+    th { background-color: #444; font-size: 18px; }
+    td:hover { background-color: #666; cursor: pointer; }
+    .free { color: #00e0b0; font-weight: bold; }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #00e0b0;
+      border: none;
+      color: black;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #00cfa0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔫 Hunt: Showdown Bingo 🔫</h1>
+  <table id="bingo"></table>
+  <button onclick="generateCard()">🔁 New card</button>
+
+  <script>
+    const words = [
+      "Frontier 73C", "Infantry 73L", "Marathon", "Ranger 73", "Vandal 73C", "Bornheim No. 3", "Conversion",
+      "LeMat", "Nagant M1895", "New Army", "Officer", "1865 Carbine", "Centennial", "Drilling",
+      "Maynard Sniper", "Springfield 1866", "Vetterli 71", "Pax", "Scottfield", "Berthier 1892", "Krag",
+      "Lebel 1886", "Mako 1895", "Martini‑Henry", "Mosin Obrez", "Mosin‑Nagant", "Sparks", "Haymaker",
+      "Uppercut", "Auto‑5", "Rival 78", "Romero 77", "Slate", "Specter 1882", "Terminus", "Bomb Lance",
+      "Bomb Launcher", "Chu Ko Nu", "Crossbow", "Dolch 96", "Hand Crossbow", "Hunting Bow",
+      "Nitro Express", "Baseball Bat", "Cavalry Saber", "Combat Axe", "Katana", "Machete", "Railroad Hammer"
+    ];
+
+    function getRandomWords(list, count) {
+      let copy = [...list];
+      let result = [];
+      for (let i = 0; i < count; i++) {
+        const idx = Math.floor(Math.random() * copy.length);
+        result.push(copy.splice(idx, 1)[0]);
+      }
+      return result;
+    }
+
+    function generateCard() {
+      const table = document.getElementById("bingo");
+      const selected = getRandomWords(words, 25);
+      selected[12] = "🎯 FREE"; // Mitte der Karte
+
+      table.innerHTML = "";
+
+      const header = table.insertRow();
+      for (let c of "BINGO") {
+        let th = document.createElement("th");
+        th.innerText = c;
+        header.appendChild(th);
+      }
+
+      for (let row = 0; row < 5; row++) {
+        let tr = table.insertRow();
+        for (let col = 0; col < 5; col++) {
+          let cell = tr.insertCell();
+          let value = selected[row * 5 + col];
+          cell.innerHTML = value;
+          if (row === 2 && col === 2) cell.classList.add("free");
+          cell.onclick = () => cell.style.backgroundColor = "#00e0b0";
+        }
+      }
+    }
+
+    generateCard();
+  </script>
+</body>
+</html>
